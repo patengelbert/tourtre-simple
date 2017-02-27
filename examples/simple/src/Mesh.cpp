@@ -33,19 +33,21 @@ void Mesh::createGraph(std::vector<size_t> & order)
 	sort( order.begin() , order.end(), AscendingOrder(data) );
 }
 
-void Mesh::getNeighbors(size_t i, std::vector<size_t>& n) 
+size_t Mesh::getNeighbors(size_t i, size_t * n) 
 {
 	uint x,y,z;
 	data.convertIndex( i, x, y, z );
 	if ( (x+y+z)%2 == ODD_TET_PARITY ) {
 		find6Neighbors(x,y,z,n);
+		return 6;
 	} else {
 		find18Neighbors(x,y,z,n);
+		return 18;
 	}
 }
 
 
-void Mesh::find6Neighbors( uint x, uint y, uint z, std::vector< size_t > & neighbors) 
+void Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors) 
 {
 	uint nx[6],ny[6],nz[6];
 	
@@ -68,11 +70,11 @@ void Mesh::find6Neighbors( uint x, uint y, uint z, std::vector< size_t > & neigh
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
-		neighbors.push_back( data.convertIndex(nx[i],ny[i],nz[i]) );
+		neighbors[i] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
 }
 
-void Mesh::find18Neighbors( uint x, uint y, uint z, std::vector< size_t > & neighbors) 
+void Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors) 
 {
 	uint nx[18],ny[18],nz[18];
 	
@@ -112,6 +114,6 @@ void Mesh::find18Neighbors( uint x, uint y, uint z, std::vector< size_t > & neig
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
-		neighbors.push_back( data.convertIndex(nx[i],ny[i],nz[i]) );
+		neighbors[i] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
 }

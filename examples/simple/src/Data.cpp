@@ -85,9 +85,9 @@ bool Data::load(const char * file, char * prefix, bool * compressed) {
 
 
 	std::ifstream infile;
-	gzFile zinfile;
 
 	#if USE_ZLIB
+		gzFile zinfile;
 		zinfile = gzopen(file,"rb");
 		if (!zinfile) {
 			std::cerr << "could not open" << filename << std::endl;

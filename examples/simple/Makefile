@@ -15,6 +15,7 @@ INCLUDE_DIRS = -I../../include
 
 #compiler flags
 COMPILE_FLAGS = -O3 -fopenmp
+COMPILE_FLAGS += -g
 
 #lib directories
 LIB_DIRS = -L../.. 

@@ -13,9 +13,8 @@ DOCDIR := doc
 
 SOURCE_SUFFIXES := c
 
-SOURCES := $(wildcard $(SOURCEDIR)/*.$(suffix))
-OBJECTS := $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(SOURCES)))))
-
+SOURCES := $(foreach suffix,$(SOURCE_SUFFIXES),$(wildcard $(SOURCEDIR)/*.$(suffix)))
+OBJECTS := $(foreach suffix, $(SOURCE_SUFFIXES), $(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(SOURCES)))))
 SHARED := libtourtre.so
 STATIC := libtourtre.a
 

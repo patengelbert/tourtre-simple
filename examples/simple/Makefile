@@ -71,10 +71,6 @@ $(EXE): $(OBJ_FILES) $(DEP_FILES)
 
 -include $(DEP_FILES)
 
-#call the macros for each suffix
-$(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call OBJ_RULE,$(suffix))))
-$(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call DEP_RULE,$(suffix))))
-
 #for reference, this is what the output of these macros would look like if hand-written, for the suffix cpp
 
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp

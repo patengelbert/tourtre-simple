@@ -1,18 +1,20 @@
-CC = gcc
-CFLAGS = -ansi -pedantic -Wall -fPIC -O3
+CC := gcc
+CFLAGS := -ansi -pedantic -Wall -fPIC -O3
 CFLAGS += -std=c11
 CFLAGS += -g
 
-AR = ar
-ARFLAGS = -r
+AR := ar
+ARFLAGS := -r
 
 SOURCEDIR := src
 BUILDDIR := obj
 INCLUDEDIR := include
 DOCDIR := doc
 
-SOURCES := $(shell find $(SOURCEDIR) -name '*.c')
-OBJECTS := $(addprefix $(BUILDDIR)/,$(notdir $(SOURCES:%.c=%.o)))
+SOURCE_SUFFIXES := c
+
+SOURCES := $(shell find $(SOURCEDIR) -name $(SOURCE_SUFFIXES))
+OBJECTS := $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(wildcard $(SOURCEDIR)/*.$(suffix))))))
 
 SHARED := libtourtre.so
 STATIC := libtourtre.a
@@ -31,6 +33,9 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
 	mkdir -p $(dir $@)	
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDEDIR) -I$(dir $<) -c $< -o $@
 
+examples: all
+	cd examples/simple && make all
+
 doxyfile.inc: Makefile
 	@echo INPUT                  = $(INCLUDEDIR) > doxyfile.inc
 	@echo OUTPUT_DIRECTORY         =  $(DOCDIR) >> doxyfile.inc
@@ -40,3 +45,4 @@ doc: doxyfile.inc $(SOURCES)
 
 clean :
 	-rm -rf $(SHARED) $(STATIC) $(OBJECTS) $(DOCDIR)/html doxyfile.inc
+	-cd examples/simple && $(MAKE) clean

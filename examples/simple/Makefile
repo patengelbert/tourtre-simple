@@ -14,7 +14,7 @@ EXE = simple
 INCLUDE_DIRS = -I../../include
 
 #compiler flags
-COMPILE_FLAGS = -O3
+COMPILE_FLAGS = -O3 -fopenmp
 
 #lib directories
 LIB_DIRS = -L../.. 

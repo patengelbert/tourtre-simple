@@ -170,7 +170,7 @@ ctArc * ct_sweepAndMerge( ctContext * ctx )
 {
 ct_checkContext(ctx);
 {
-    #pragma omp sections
+    #pragma omp parallel sections
     {
         #pragma omp section
         ct_joinSweep(ctx);

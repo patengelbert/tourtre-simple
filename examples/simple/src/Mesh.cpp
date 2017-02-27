@@ -65,12 +65,12 @@ void Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	ny[4] += 1;
 	nz[5] += 1;
 	
-	for (uint i = 0; i < 6; i++) {
+	for (uint i = 0, s = 0; i < 6; i++) {
 		if (nx[i] >= data.size[0]) continue;	
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
-		neighbors[i] = data.convertIndex(nx[i],ny[i],nz[i]);
+		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
 }
 
@@ -107,13 +107,13 @@ void Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	nz[16] -= 1; nx[16] += 1;
 	nz[17] += 1; nx[17] += 1;
 	
-	for (uint i = 0; i < 18; i++) {
+	for (uint i = 0, s = 0; i < 18; i++) {
 		
 		
 		if (nx[i] >= data.size[0]) continue;	
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
-		neighbors[i] = data.convertIndex(nx[i],ny[i],nz[i]);
+		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
 }

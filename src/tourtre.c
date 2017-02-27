@@ -620,7 +620,7 @@ if ( ctx->arcMap == 0 ) {
         }
         {   ctBranch * b = 0;
             ctNode * o = 0;
-            int prunedMax = 0;
+            bool prunedMax = false;
     
             if (ctNode_isMax(n)) {
                 if ( ctNode_leafArc(n)->nextUp == NULL && 
@@ -629,7 +629,7 @@ if ( ctx->arcMap == 0 ) {
                     continue;
                 }
                 b = ctBranch_new( n->i, ctNode_otherNode(n)->i, ctx );
-                prunedMax = TRUE;
+                prunedMax = true;
             } else if (ctNode_isMin(n)) {
                 if ( ctNode_leafArc(n)->nextDown == NULL && 
                      ctNode_leafArc(n)->prevDown == NULL ) 
@@ -637,7 +637,7 @@ if ( ctx->arcMap == 0 ) {
                     continue;
                 }
                 b = ctBranch_new(n->i,ctNode_otherNode(n)->i, ctx);
-                prunedMax = FALSE;
+                prunedMax = false;
             } else {
                 fprintf(stderr,"decompose() : arc was neither max nor min\n");
             }

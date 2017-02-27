@@ -102,7 +102,7 @@ ctNode * ctNode_prune(ctNode * self)
 		ctNode_removeDownArc(self->up->hi, self->up);
 		return self->up->hi;
 	} else {
-		assert(FALSE);
+		assert(false);
 	}
 	return NULL;
 }

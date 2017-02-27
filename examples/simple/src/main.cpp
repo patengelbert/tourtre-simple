@@ -9,6 +9,7 @@ extern "C"
 
 #include "Data.h"
 #include "Mesh.h"
+#include "ctContext.h"
 
 #ifdef _MSC_VER
 #include "getopt.h"
@@ -138,6 +139,7 @@ int main( int argc, char ** argv ) {
 		&neighbors,
 		&mesh //data for callbacks. The global functions less, value and neighbors are just wrappers which call mesh->getNeighbors, etc
 	);
+	ctx->maxValence = 18;
 	
 	//create contour tree
 	ct_sweepAndMerge( ctx );

@@ -18,7 +18,8 @@ class AscendingOrder
 	public:
 	AscendingOrder( Data & d ) : data(d) {}
 	bool operator()(const uint & a, const uint & b) const { 
-		return data.less( a , b );
+		if (compareEqual(data.data[a], data.data[b])) return a < b;
+		else return compareLess(data.data[a], data.data[b]);
 	}
 };
 

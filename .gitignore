@@ -316,3 +316,6 @@ doc/html/*
 examples/simple/simple
 examples/simple/tifftree
 examples/trilinear/tltree
+
+# VS Code
+.vscode/

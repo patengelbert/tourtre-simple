@@ -32,14 +32,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h> /* for size_t mostly, but malloc and free as well */
 #include <assert.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define CT_NIL 0xffffffff
-
-
-#ifndef TRUE
-	#define TRUE (!0)
-	#define FALSE (0)
-#endif
-
 
 #endif

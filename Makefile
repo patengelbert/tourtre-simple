@@ -19,9 +19,11 @@ OBJECTS := $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(BUILDDIR)/,$(notdir
 SHARED := libtourtre.so
 STATIC := libtourtre.a
 
-.PHONY: all clean doc
+.PHONY: all clean doc libs examples
 
-all : $(SHARED) $(STATIC)
+all : examples
+
+libs: $(SHARED) $(STATIC)
 
 $(SHARED) : $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
@@ -33,8 +35,8 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
 	mkdir -p $(dir $@)	
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDEDIR) -I$(dir $<) -c $< -o $@
 
-examples: all
-	cd examples/simple && make all
+examples: libs
+	cd examples/simple && $(MAKE) all
 
 doxyfile.inc: Makefile
 	@echo INPUT                  = $(INCLUDEDIR) > doxyfile.inc

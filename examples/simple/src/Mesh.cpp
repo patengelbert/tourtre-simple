@@ -38,16 +38,14 @@ size_t Mesh::getNeighbors(size_t i, size_t * n)
 	uint x,y,z;
 	data.convertIndex( i, x, y, z );
 	if ( (x+y+z)%2 == ODD_TET_PARITY ) {
-		find6Neighbors(x,y,z,n);
-		return 6;
+		return find6Neighbors(x,y,z,n);
 	} else {
-		find18Neighbors(x,y,z,n);
-		return 18;
+		return find18Neighbors(x,y,z,n);
 	}
 }
 
 
-void Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors) 
+size_t Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors) 
 {
 	uint nx[6],ny[6],nz[6];
 	
@@ -65,16 +63,18 @@ void Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	ny[4] += 1;
 	nz[5] += 1;
 	
-	for (uint i = 0, s = 0; i < 6; i++) {
+	uint s = 0;
+	for (uint i = 0; i < 6; i++) {
 		if (nx[i] >= data.size[0]) continue;	
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
 		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
+	return s;
 }
 
-void Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors) 
+size_t Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors) 
 {
 	uint nx[18],ny[18],nz[18];
 	
@@ -107,7 +107,8 @@ void Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	nz[16] -= 1; nx[16] += 1;
 	nz[17] += 1; nx[17] += 1;
 	
-	for (uint i = 0, s = 0; i < 18; i++) {
+	uint s = 0;
+	for (uint i = 0; i < 18; i++) {
 		
 		
 		if (nx[i] >= data.size[0]) continue;	
@@ -116,4 +117,5 @@ void Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	
 		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
 	}
+	return s;
 }

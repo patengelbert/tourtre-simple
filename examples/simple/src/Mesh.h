@@ -20,8 +20,8 @@ class Mesh
 	
 	
 
-	void find6Neighbors( uint x, uint y, uint z, size_t * neighbors);
-	void find18Neighbors( uint x, uint y, uint z, size_t * neighbors);
+	size_t find6Neighbors( uint x, uint y, uint z, size_t * neighbors);
+	size_t find18Neighbors( uint x, uint y, uint z, size_t * neighbors);
 	
 };
 

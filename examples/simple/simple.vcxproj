@@ -106,7 +106,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>USE_ZLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STATIC_GETOPT;USE_ZLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../include;lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>MaxSpeedHighLevel</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -127,6 +127,15 @@
     <ClCompile Include="src\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\ctArc.h" />
+    <ClInclude Include="..\..\include\ctBranch.h" />
+    <ClInclude Include="..\..\include\ctComponent.h" />
+    <ClInclude Include="..\..\include\ctContext.h" />
+    <ClInclude Include="..\..\include\ctMisc.h" />
+    <ClInclude Include="..\..\include\ctNode.h" />
+    <ClInclude Include="..\..\include\ctNodeMap.h" />
+    <ClInclude Include="..\..\include\ctQueue.h" />
+    <ClInclude Include="..\..\include\tourtre.h" />
     <ClInclude Include="src\Data.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Mesh.h" />

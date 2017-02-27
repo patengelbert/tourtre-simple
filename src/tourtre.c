@@ -183,33 +183,6 @@ ct_checkContext(ctx);
 }
 
 
-/*struct sweepRunnerArgs_t
-{
-    size_t start, end;
-    int inc;
-    ctContext* ctx;
-    size_t* numNbrs;
-    size_t* nbrs;
-    pthread_barrier_t * barrier;
-};
-
-static void* sweepRunner(void* arg)
-{
-    struct sweepRunnerArgs_t * args = arg;
-    ctContext* ctx = args->ctx;
-    size_t end = args->end;
-    int inc = args->inc;
-    size_t* numNbrs = args->numNbrs;
-    size_t* nbrs = args->nbrs;
-    pthread_barrier_t* barrier = args->barrier;
-    for(size_t itr = args->start; itr != end; itr += inc) {
-        size_t i = ctx->totalOrder[itr];
-        *numNbrs = (*(ctx->neighbors))(i,nbrs,ctx->cbData);
-        //pthread_barrier_wait(barrier);
-    }
-    return NULL;
-}*/
-
 
 static
 ctComponent* 
@@ -232,22 +205,6 @@ ct_checkContext(ctx);
     size_t numNbrs;
     size_t * nbrs = calloc ( ctx->maxValence, sizeof(size_t) );
 
-    /*pthread_barrier_t * barrier = malloc(sizeof(pthread_barrier_t));
-    pthread_barrier_init(barrier, NULL, 2);
-
-    struct sweepRunnerArgs_t args;
-    args.start = start;
-    args.end = end;
-    args.inc = inc;
-    args.ctx = ctx;
-    args.numNbrs = &numNbrs;
-    args.nbrs = nbrs;
-    args.barrier = barrier;
-
-    pthread_t tid;
-    if(pthread_create(&tid, NULL, &sweepRunner, (void*)&args))
-        exit(1);*/
-
     for ( itr = start; itr != end; itr += inc ) {
         int numNbrComps;
         
@@ -256,8 +213,6 @@ ct_checkContext(ctx);
         iComp = NULL;
         
         numNbrs = (*(ctx->neighbors))(i,nbrs,ctx->cbData);
-        //pthread_barrier_wait(barrier);
-
         numNbrComps = 0;
         for (n = 0; n < numNbrs; n++) {
             size_t j = nbrs[n];

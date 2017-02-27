@@ -35,7 +35,7 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
 	mkdir -p $(dir $@)	
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDEDIR) -I$(dir $<) -c $< -o $@
 
-examples: libs
+examples: $(STATIC)
 	cd examples/simple && "$(MAKE)" all
 
 doxyfile.inc: Makefile

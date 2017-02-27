@@ -21,7 +21,7 @@ COMPILE_FLAGS += -g
 LIB_DIRS = -L../.. 
 
 #linker flags
-LINK_FLAGS = -lz -ltourtre -static
+LINK_FLAGS = -lz -ltourtre -static -fopenmp
 
 #preprocessor defines
 DEFINES = -DUSE_ZLIB

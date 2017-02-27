@@ -20,7 +20,7 @@ COMPILE_FLAGS = -O3
 LIB_DIRS = -L../.. 
 
 #linker flags
-LINK_FLAGS = -lz -ltourtre
+LINK_FLAGS = -lz -ltourtre -static
 
 #preprocessor defines
 DEFINES = -DUSE_ZLIB

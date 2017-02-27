@@ -24,10 +24,10 @@ all : examples
 
 libs: $(SHARED) $(STATIC)
 
-$(SHARED) : $(OBJECTS)
+$(STATIC) : $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $^
 	
-$(STATIC) : $(OBJECTS)
+$(SHARED) : $(OBJECTS)
 	$(CC) -shared -o $@ $^
 
 $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c

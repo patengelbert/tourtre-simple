@@ -14,7 +14,7 @@ EXE = simple
 INCLUDE_DIRS = -I../../include
 
 #compiler flags
-COMPILE_FLAGS = -O3
+COMPILE_FLAGS = -O3 -fopenmp
 
 #lib directories
 LIB_DIRS = -L../.. 
@@ -70,10 +70,6 @@ $(EXE): $(OBJ_FILES) $(DEP_FILES)
 	$(CXX) -o $(EXE) $(filter $(OBJ_DIR)/%.o, $^) $(LDFLAGS)
 
 -include $(DEP_FILES)
-
-#call the macros for each suffix
-$(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call OBJ_RULE,$(suffix))))
-$(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call DEP_RULE,$(suffix))))
 
 #for reference, this is what the output of these macros would look like if hand-written, for the suffix cpp
 

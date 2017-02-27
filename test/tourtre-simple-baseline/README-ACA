@@ -1,0 +1,12 @@
+This package is extracted from Scott Dillard's library "libtourtre",
+for computing contour trees.  The original full distribution can be downloaded from
+   http://graphics.cs.ucdavis.edu/~sdillard/libtourtre/doc/html/
+
+It has been extracted in order to simplify its use in the 2017
+Advanced Computer Architecture course at Imperial College London.  I
+have removed all the example programs except one, "simple".  I have
+modified the build procedure so everything is simply compiled together
+(the original distribution builds a .a or .so library against which
+the applications, such as "simple", are linked).
+
+Paul Kelly - Imperial College London - February 2017

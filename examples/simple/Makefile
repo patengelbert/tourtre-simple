@@ -71,16 +71,6 @@ $(EXE): $(OBJ_FILES) $(DEP_FILES)
 
 -include $(DEP_FILES)
 
-#implicit-rule macro for .o files
-define OBJ_RULE
-$(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.$(1) ; $$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) -c -o $$@ $$<
-endef
-
-#implicit-rule macro for .d files
-define DEP_RULE
-$(OBJ_DIR)/%.d: $(SOURCE_DIR)/%.$(1) ; $$(CXX) $$(CPPFLAGS) $$< -MM -MT $$@ -MT $$(subst .d,.o,$$@) -MF $$(subst .o,.d,$$@)
-endef
-
 #call the macros for each suffix
 $(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call OBJ_RULE,$(suffix))))
 $(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call DEP_RULE,$(suffix))))
@@ -88,9 +78,11 @@ $(foreach suffix,$(SOURCE_SUFFIXES),$(eval $(call DEP_RULE,$(suffix))))
 #for reference, this is what the output of these macros would look like if hand-written, for the suffix cpp
 
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp
+	mkdir -p $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@  $<
 
 $(OBJ_DIR)/%.d: $(SOURCE_DIR)/%.cpp
+	mkdir -p $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $< -MM -MT $@ -MT $(subst .d,.o,$@) -MF $(subst .o,.d,$@)
 
 %.h :

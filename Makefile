@@ -13,8 +13,8 @@ DOCDIR := doc
 
 SOURCE_SUFFIXES := c
 
-SOURCES := $(shell find $(SOURCEDIR) -name $(SOURCE_SUFFIXES))
-OBJECTS := $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(wildcard $(SOURCEDIR)/*.$(suffix))))))
+SOURCES := $(wildcard $(SOURCEDIR)/*.$(suffix))
+OBJECTS := $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(SOURCES)))))
 
 SHARED := libtourtre.so
 STATIC := libtourtre.a
@@ -36,7 +36,7 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDEDIR) -I$(dir $<) -c $< -o $@
 
 examples: libs
-	cd examples/simple && $(MAKE) all
+	cd examples/simple && "$(MAKE)" all
 
 doxyfile.inc: Makefile
 	@echo INPUT                  = $(INCLUDEDIR) > doxyfile.inc
@@ -47,4 +47,4 @@ doc: doxyfile.inc $(SOURCES)
 
 clean :
 	-rm -rf $(SHARED) $(STATIC) $(OBJECTS) $(DOCDIR)/html doxyfile.inc
-	-cd examples/simple && $(MAKE) clean
+	-cd examples/simple && "$(MAKE)" clean

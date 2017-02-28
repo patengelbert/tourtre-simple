@@ -5,6 +5,7 @@
 extern "C" 
 {
 #include <tourtre.h>
+#include <seiHelpers.h>
 }
 
 #include "Data.h"
@@ -56,10 +57,10 @@ int countTree( ctBranch * b ) {
 	}
 	
 	return count;
-} 
+}
 
-
-
+unsigned logLevel = LOG_ERROR;
+FILE *logStream = stderr;
 
 int main( int argc, char ** argv ) {
 
@@ -73,10 +74,16 @@ int main( int argc, char ** argv ) {
 	char outfile[1024] = "";
 	
 	#if USE_ZLIB
-	char switches[256] = "i:o:c";
+	char switches[256] = "i:o:d:c";
 	#else
-	char switches[256] = "i:o:c";
+	char switches[256] = "i:o:d:c";
 	#endif
+
+	// LOG(LOG_FATAL, "log fatal");
+	// LOG(LOG_ERROR, "log error");
+	// LOG(LOG_WARNING, "log warning");
+	// LOG(LOG_INFO, "log info");
+	// LOG(LOG_DEBUG, "logging debug");
 
 	while ( ( c = getopt( argc, argv, switches ) ) != EOF ) {
 		switch ( c ) {
@@ -88,15 +95,21 @@ int main( int argc, char ** argv ) {
 					strcpy(outfile,optarg);
 					break;
 				}
-		                case 'c': {
-				        countOnly = 1;
+				case 'c': {
+					countOnly = 1;
 					break;
+				}
+				case 'd': {
+				    logLevel = atoi(optarg);
+				    break;
 				}
 				case '?':
 					errflg++;
 		}
 	}
-		
+
+	LOG(LOG_INFO, "Using log level: %d", logLevel);
+
 	if ( errflg || filename[0] == '\0') {
 		clog << "usage: " << argv[0] << " <flags> " << endl << endl;
 		
@@ -104,6 +117,7 @@ int main( int argc, char ** argv ) {
 		clog << "\t -i < filename >  :  filename" << endl;
 		clog << "\t -o < filename >  :  filename" << endl;
 		clog << "\t -c    (to emit only a count of the tree size)" << endl;
+		clog << "\t -d < level > 	 :	logging level (default 2)" << endl;
 		clog << endl;
 
 		clog << "Filename must be of the form <name>.<i>x<j>x<k>.<type>" << endl;

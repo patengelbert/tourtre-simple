@@ -1,0 +1,2 @@
+*.uint8 filter=lfs diff=lfs merge=lfs -text
+*.uint16 filter=lfs diff=lfs merge=lfs -text

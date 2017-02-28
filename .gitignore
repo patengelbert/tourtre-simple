@@ -319,6 +319,7 @@ examples/trilinear/tltree
 
 # VS Code
 .vscode/
+.history/
 
 # Profiling
 callgrind.*.*

@@ -324,3 +324,6 @@ examples/trilinear/tltree
 callgrind.*.*
 profile.sh
 profiles/*
+
+# Test
+test/results

@@ -34,7 +34,7 @@
     do                                                                                                                         \
     {                                                                                                                          \
         if (level <= logLevel) {                                                                                                \
-            fprintf(logStream, "%s[%s:%d] : %s -> " fmt ANSI_COLOR_RESET "\n", LOG_COLOR(level), __FILENAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__); \
+            fprintf(logStream, "%s[%s:%d] : %s -> " fmt ANSI_COLOR_RESET "\n", LOG_COLOR(level), __FILENAME__, __LINE__, __func__, ##__VA_ARGS__); \
         }                                                                                                                        \
     } while (0);
 #else

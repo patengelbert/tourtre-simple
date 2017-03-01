@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "tourtre.h"
 
 #include <stdio.h>
+#include <omp.h>
 //#include <pthread.h>
 
 #include "ctQueue.h"
@@ -37,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ctContext.h"
 #include "ctNodeMap.h"
 #include "sglib.h"
+#include "seiHelpers.h"
 
 /* local functions */
 static
@@ -137,6 +139,7 @@ void ct_cleanup( ctContext * ctx )
 
 void ct_joinSweep( ctContext * ctx )
 {
+LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
 ct_checkContext(ctx);
 {
     ctx->joinRoot = 
@@ -147,6 +150,7 @@ ct_checkContext(ctx);
 
 void ct_splitSweep( ctContext * ctx )
 {
+LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
 ct_checkContext(ctx);
 {
     ctx->splitRoot = 
@@ -170,7 +174,7 @@ ctArc * ct_sweepAndMerge( ctContext * ctx )
 {
 ct_checkContext(ctx);
 {
-    #pragma omp parallel sections
+    #pragma omp parallel sections num_threads(2) 
     {
         #pragma omp section
         ct_joinSweep(ctx);

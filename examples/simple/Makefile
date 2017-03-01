@@ -24,7 +24,7 @@ LIB_DIRS = -L../..
 LINK_FLAGS = -lz -ltourtre -static -fopenmp
 
 #preprocessor defines
-DEFINES = -DUSE_ZLIB
+DEFINES = -DUSE_ZLIB -DPARALLEL_SORT
 
 #source suffixes to scan for
 SOURCE_SUFFIXES = cpp cc

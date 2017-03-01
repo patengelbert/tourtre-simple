@@ -2,6 +2,11 @@
 
 #include <iostream>
 #include <algorithm>
+#if defined (__GNUG__) && defined(PARALLEL_SORT)
+#include <parallel/algorithm>
+#endif
+
+#include "seiHelpers.h"
 
 using std::cout;
 using std::endl;
@@ -30,8 +35,13 @@ void Mesh::createGraph(std::vector<size_t> & order)
 	
 	for (uint i = 0; i < order.size(); i++) 
 		order[i] = i;
-	
+#if defined (__GNUG__) && defined(PARALLEL_SORT)
+	LOG(LOG_DEBUG, "Using parallel sorting");
+	__gnu_parallel::sort(order.begin(), order.end(), AscendingOrder(data));
+#else
+	LOG(LOG_DEBUG, "Using serial sorting");
 	sort( order.begin() , order.end(), AscendingOrder(data) );
+#endif
 }
 
 size_t Mesh::getNeighbors(size_t i, size_t * n) 

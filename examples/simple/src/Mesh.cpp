@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
-#if defined (__GNUG__) && defined(PARALLEL_SORT)
+#if defined (__GNUG__) && defined(OPT_PARALLEL_SORT)
 #include <parallel/algorithm>
 #endif
 
@@ -23,8 +23,12 @@ class AscendingOrder
 	public:
 	AscendingOrder( Data & d ) : data(d) {}
 	bool operator()(const uint & a, const uint & b) const { 
+#ifdef OPT_FAST_SORT
 		if (compareEqual(data.data[a], data.data[b])) return a < b;
 		else return compareLess(data.data[a], data.data[b]);
+#else
+		return data.less(a, b);
+#endif
 	}
 };
 
@@ -35,7 +39,7 @@ void Mesh::createGraph(std::vector<size_t> & order)
 	
 	for (uint i = 0; i < order.size(); i++) 
 		order[i] = i;
-#if defined (__GNUG__) && defined(PARALLEL_SORT)
+#if defined (__GNUG__) && defined(OPT_PARALLEL_SORT)
 	LOG(LOG_DEBUG, "Using parallel sorting");
 	__gnu_parallel::sort(order.begin(), order.end(), AscendingOrder(data));
 #else
@@ -44,7 +48,11 @@ void Mesh::createGraph(std::vector<size_t> & order)
 #endif
 }
 
-size_t Mesh::getNeighbors(size_t i, size_t * n) 
+#ifdef OPT_VECTOR
+size_t Mesh::getNeighbors(size_t i, size_t * n)
+#else
+void Mesh::getNeighbors(size_t i, std::vector<size_t> & n)
+#endif
 {
 	uint x,y,z;
 	data.convertIndex( i, x, y, z );
@@ -55,17 +63,20 @@ size_t Mesh::getNeighbors(size_t i, size_t * n)
 	}
 }
 
-
+#ifdef OPT_VECTOR
 size_t Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors) 
+#else
+void Mesh::find6Neighbors(uint x, uint y, uint z, std::vector< size_t > & neighbors)
+#endif
 {
-	uint nx[6],ny[6],nz[6];
-	
+	uint nx[6], ny[6], nz[6];
+
 	for (uint i = 0; i < 6; i++) {
 		nx[i] = x;
 		ny[i] = y;
 		nz[i] = z;
 	}
-	
+
 	//first 6 neighbors
 	nx[0] -= 1;
 	ny[1] -= 1;
@@ -73,19 +84,28 @@ size_t Mesh::find6Neighbors( uint x, uint y, uint z, size_t * neighbors)
 	nx[3] += 1;
 	ny[4] += 1;
 	nz[5] += 1;
-	
+
 	uint s = 0;
 	for (uint i = 0; i < 6; i++) {
-		if (nx[i] >= data.size[0]) continue;	
-		if (ny[i] >= data.size[1]) continue;	
-		if (nz[i] >= data.size[2]) continue;	
-	
-		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
+		if (nx[i] >= data.size[0]) continue;
+		if (ny[i] >= data.size[1]) continue;
+		if (nz[i] >= data.size[2]) continue;
+
+#ifdef OPT_VECTOR
+		neighbors[s++] = data.convertIndex(nx[i], ny[i], nz[i]);
 	}
 	return s;
+#else
+		neighbors.push_back( data.convertIndex(nx[i], ny[i], nz[i]) );
+	}
+#endif
 }
 
-size_t Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors) 
+#ifdef OPT_VECTOR
+size_t Mesh::find18Neighbors(uint x, uint y, uint z, size_t * neighbors)
+#else
+void Mesh::find18Neighbors(uint x, uint y, uint z, std::vector< size_t > & neighbors)
+#endif
 {
 	uint nx[18],ny[18],nz[18];
 	
@@ -126,7 +146,12 @@ size_t Mesh::find18Neighbors( uint x, uint y, uint z, size_t * neighbors)
 		if (ny[i] >= data.size[1]) continue;	
 		if (nz[i] >= data.size[2]) continue;	
 	
-		neighbors[s++] = data.convertIndex(nx[i],ny[i],nz[i]);
+#ifdef OPT_VECTOR
+		neighbors[s++] = data.convertIndex(nx[i], ny[i], nz[i]);
 	}
 	return s;
+#else
+		neighbors.push_back(data.convertIndex(nx[i], ny[i], nz[i]));
+	}
+#endif
 }

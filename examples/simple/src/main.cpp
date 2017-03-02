@@ -6,6 +6,10 @@ extern "C"
 {
 #include <tourtre.h>
 #include <seiHelpers.h>
+
+unsigned logLevel = LOG_ERROR;
+FILE *logStream = stderr;
+
 }
 
 #include "Data.h"
@@ -34,7 +38,24 @@ double value ( size_t v, void * d ) {
 
 size_t neighbors ( size_t v, size_t * nbrs, void * d ) {
 	Mesh * mesh = static_cast<Mesh*>(d);
+
+#ifdef OPT_VECTOR
 	return mesh->getNeighbors(v,nbrs);
+#else
+
+#ifndef _OPENMP
+	static
+#endif
+	std::vector<size_t> nbrsBuf;
+
+	nbrsBuf.clear();
+	mesh->getNeighbors(v, nbrsBuf);
+
+	for (uint i = 0; i < nbrsBuf.size(); i++) {
+		nbrs[i] = nbrsBuf[i];
+	}
+	return nbrsBuf.size();
+#endif
 }
 
 
@@ -58,9 +79,6 @@ int countTree( ctBranch * b ) {
 	
 	return count;
 }
-
-unsigned logLevel = LOG_ERROR;
-FILE *logStream = stderr;
 
 int main( int argc, char ** argv ) {
 
@@ -153,7 +171,9 @@ int main( int argc, char ** argv ) {
 		&neighbors,
 		&mesh //data for callbacks. The global functions less, value and neighbors are just wrappers which call mesh->getNeighbors, etc
 	);
+#ifdef OPT_MAX_VALENCE
 	ctx->maxValence = 18;
+#endif
 	
 	//create contour tree
 	ct_sweepAndMerge( ctx );

@@ -19,7 +19,7 @@
 #define LOG_DEBUG   (4)
 
 // Always print filename before debug message
-#define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #ifndef NDEBUG
 
@@ -41,6 +41,15 @@
 #define LOG(level, fmt, ...) (void)0;
 #endif
 
-extern unsigned logLevel;
-extern FILE *logStream;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	extern unsigned logLevel;
+	extern FILE *logStream;
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* SEIHELPERS_H */

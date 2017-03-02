@@ -28,8 +28,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "tourtre.h"
 
 #include <stdio.h>
+#ifdef _OPENMP
 #include <omp.h>
-//#include <pthread.h>
+#endif
 
 #include "ctQueue.h"
 #include "ctMisc.h"
@@ -139,7 +140,9 @@ void ct_cleanup( ctContext * ctx )
 
 void ct_joinSweep( ctContext * ctx )
 {
+#ifdef _OPENMP
 LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
+#endif
 ct_checkContext(ctx);
 {
     ctx->joinRoot = 
@@ -150,7 +153,9 @@ ct_checkContext(ctx);
 
 void ct_splitSweep( ctContext * ctx )
 {
+#ifdef _OPENMP
 LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
+#endif
 ct_checkContext(ctx);
 {
     ctx->splitRoot = 

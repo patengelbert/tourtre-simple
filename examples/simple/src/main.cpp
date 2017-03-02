@@ -6,6 +6,9 @@ extern "C"
 {
 #include <tourtre.h>
 #include <seiHelpers.h>
+
+unsigned logLevel = LOG_ERROR;
+FILE *logStream = stderr;
 }
 
 #include "Data.h"
@@ -58,9 +61,6 @@ int countTree( ctBranch * b ) {
 	
 	return count;
 }
-
-unsigned logLevel = LOG_ERROR;
-FILE *logStream = stderr;
 
 int main( int argc, char ** argv ) {
 

@@ -41,6 +41,15 @@
 #define LOG(level, fmt, ...) (void)0;
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern unsigned logLevel;
 extern FILE *logStream;
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* SEIHELPERS_H */

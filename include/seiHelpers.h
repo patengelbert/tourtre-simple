@@ -1,6 +1,7 @@
 #ifndef SEIHELPERS_H
 #define SEIHELPERS_H
 
+#include <string.h>
 #include <stdio.h>
 
 #define ANSI_COLOR_BOLD_RED "\x1b[1;31m"

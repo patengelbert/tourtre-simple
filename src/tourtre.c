@@ -141,7 +141,7 @@ void ct_cleanup( ctContext * ctx )
 void ct_joinSweep( ctContext * ctx )
 {
 #ifdef _OPENMP
-LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
+LOG(LOG_INFO, "Running on thread: %d", omp_get_thread_num());
 #endif
 ct_checkContext(ctx);
 {
@@ -149,12 +149,14 @@ ct_checkContext(ctx);
         ct_sweep( 0,ctx->numVerts,+1,
             CT_JOIN_COMPONENT, ctx->joinComps, ctx->nextJoin, ctx  );
 }
+ct_checkContext(ctx);
+LOG(LOG_DEBUG, "Finished");
 }
 
 void ct_splitSweep( ctContext * ctx )
 {
 #ifdef _OPENMP
-LOG(LOG_DEBUG, "Running on thread: %d", omp_get_thread_num());
+LOG(LOG_INFO, "Running on thread: %d", omp_get_thread_num());
 #endif
 ct_checkContext(ctx);
 {
@@ -162,6 +164,8 @@ ct_checkContext(ctx);
         ct_sweep( ctx->numVerts-1,-1,-1, 
             CT_SPLIT_COMPONENT, ctx->splitComps, ctx->nextSplit, ctx );
 }
+ct_checkContext(ctx);
+LOG(LOG_DEBUG, "Finished");
 }
 
 ctArc * ct_mergeTrees( ctContext * ctx )
@@ -186,7 +190,8 @@ ct_checkContext(ctx);
         #pragma omp section
         ct_splitSweep(ctx);
     }
-    ct_augment( ctx );
+    LOG(LOG_DEBUG, "Finished OPENMP sections");
+    ct_augment(ctx);
     return ctx->tree=ct_merge( ctx );
 }
 }
@@ -706,10 +711,12 @@ static
 void 
 ct_checkContext ( ctContext * ctx ) 
 {
+    LOG(LOG_DEBUG, "Checking context %p", ctx);
     assert( ctx->numVerts > 0 );
     assert( ctx->totalOrder );
     assert( ctx->value );
     assert( ctx->neighbors );
+    LOG(LOG_DEBUG, "Finished checking context %p", ctx);
 }
 
 

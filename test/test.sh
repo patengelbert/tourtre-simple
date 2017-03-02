@@ -19,7 +19,7 @@ make -C tourtre-simple-baseline/ > /dev/null
 # Make improved
 make -C ../ > /dev/null
 
-# Get list of input files
+
 inputs=$(ls sampledata/)
 
 results=""

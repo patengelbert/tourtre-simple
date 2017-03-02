@@ -45,8 +45,8 @@
 extern "C" {
 #endif
 
-	extern unsigned logLevel;
-	extern FILE *logStream;
+extern unsigned logLevel;
+extern FILE *logStream;
 
 #ifdef __cplusplus
 }

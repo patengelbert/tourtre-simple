@@ -1,8 +1,12 @@
+PPFLAGS ?= 
+
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -fPIC -O3
-CFLAGS += -fopenmp -D_OPENMP
 CFLAGS += -std=c11
 CFLAGS += -g
+CFLAGS += -DNDEBUG
+CFLAGS += ${PPFLAGS}
+
 
 AR := ar
 ARFLAGS := -r
@@ -48,3 +52,4 @@ doc: doxyfile.inc $(SOURCES)
 clean :
 	-rm -rf $(SHARED) $(STATIC) $(OBJECTS) $(DOCDIR)/html doxyfile.inc
 	-cd examples/simple && "$(MAKE)" clean
+

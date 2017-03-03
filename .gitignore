@@ -328,3 +328,8 @@ profiles/*
 
 # Test
 test/results
+
+# C Tags
+GTAGS
+GPATH
+GRTAGS

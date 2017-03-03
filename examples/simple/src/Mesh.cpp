@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <algorithm>
-#if defined (__GNUG__) && defined(OPT_PARALLEL_SORT)
-#include <parallel/algorithm>
+#if defined(OPT_PARALLEL_SORT) && defined(_OPENMP)
+#include "parallel_stable_sort.h"
 #endif
 
 #include "seiHelpers.h"
@@ -39,9 +39,9 @@ void Mesh::createGraph(std::vector<size_t> & order)
 	
 	for (uint i = 0; i < order.size(); i++) 
 		order[i] = i;
-#if defined (__GNUG__) && defined(OPT_PARALLEL_SORT)
+#if defined(OPT_PARALLEL_SORT) && defined(_OPENMP)
 	LOG(LOG_DEBUG, "Using parallel sorting");
-	__gnu_parallel::sort(order.begin(), order.end(), AscendingOrder(data));
+	pss::parallel_stable_sort(order.begin(), order.end(), AscendingOrder(data));
 #else
 	LOG(LOG_DEBUG, "Using serial sorting");
 	sort( order.begin() , order.end(), AscendingOrder(data) );

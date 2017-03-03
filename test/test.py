@@ -35,6 +35,7 @@ try:
         perms = list(itertools.permutations(ppflags, j))
         for i in range(len(perms)):
             ppflags_perms.append(perms[i])
+    ppflags_perms.reverse()
 except FileNotFoundError:
     print('Could not find ppflags.txt. Running with no flags.')
 
@@ -57,6 +58,7 @@ for file in input_files:
     ref_time, ref_stdout, ref_stderr = time_process(execute_ref)
 
     ref_times[file] = ref_time
+
 
 # Execute improved implementation for every permutation of ppflags
 for perm in ppflags_perms:

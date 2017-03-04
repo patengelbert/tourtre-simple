@@ -58,6 +58,7 @@ ref_times = {}  # Store ref impl times
 
 # Execute ref implementation
 for filename in input_files:
+    os.system("sudo sh -c 'free; sync; echo 3 > /proc/sys/vm/drop_caches; free;'")
     execute_ref = subprocess.Popen([ref_simple, '-i', os.path.join(rootdir, 'sampledata', filename), '-o', '/tmp/ref_' + filename], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     ref_time, ref_stdout, ref_stderr = time_process(execute_ref)
 
@@ -80,6 +81,7 @@ for perm in ppflags_perms:
 
     # Execute for every input
     for filename in input_files:
+        os.system("sudo sh -c 'free; sync; echo 3 > /proc/sys/vm/drop_caches; free;'")
         execute_improved = subprocess.Popen([improved_simple, '-i', os.path.join(rootdir, 'sampledata', filename), '-o', '/tmp/improved_'+filename], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         improved_time, improved_stdout, improved_stderr = time_process(execute_improved)
 
@@ -97,7 +99,6 @@ for perm in ppflags_perms:
 
         # Output result
         results.append(result)
-
 
     pretty_results = prettify(results)
 

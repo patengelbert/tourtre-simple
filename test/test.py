@@ -3,7 +3,7 @@ import os
 import itertools
 import argparse
 from time_process import *
-from print_results import *
+from prettify import *
 import subprocess
 
 parser = argparse.ArgumentParser()
@@ -93,13 +93,16 @@ for perm in ppflags_perms:
 
         # Output result
         results.append(result)
-        for word in result:
-            statsfile.write(word + '\t')
-        statsfile.write('\n')
+
+
+    pretty_results = prettify(results)
+
+    # Print result
+    for line in pretty_results:
+        print(line)
+        statsfile.write(line + '\n')
+    print('\n')
+
 
     statsfile.write('\n')
     statsfile.flush()
-
-    # Print result
-    print_results(results)
-    print('\n')

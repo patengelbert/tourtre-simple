@@ -1,27 +1,28 @@
 PPFLAGS ?= 
 
 CC := gcc
-CFLAGS := -ansi -pedantic -Wall -fPIC -O3
-CFLAGS += -std=c11
-CFLAGS += -g
-CFLAGS += -DNDEBUG
-CFLAGS += ${PPFLAGS}
-
+COMPILE_FLAGS := -std=c11 -O3 -pedantic -Wall -fpic -march=native
+COMPILE_FLAGS += -g -gdwarf-2
+DEFINES := -DNDEBUG
+DEFINES += ${PPFLAGS}
 
 AR := ar
 ARFLAGS := -r
 
-SOURCEDIR := src
-BUILDDIR := obj
-INCLUDEDIR := include
-DOCDIR := doc
+SOURCE_DIR := src
+BUILD_DIR := obj
+INCLUDE_DIRS := include
+DOC_DIR := doc
 
 SOURCE_SUFFIXES := c
 
-SOURCES := $(foreach suffix,$(SOURCE_SUFFIXES),$(wildcard $(SOURCEDIR)/*.$(suffix)))
-OBJECTS := $(foreach suffix, $(SOURCE_SUFFIXES), $(addprefix $(BUILDDIR)/,$(notdir $(subst .$(suffix),.o,$(SOURCES)))))
+SOURCES := $(foreach suffix,$(SOURCE_SUFFIXES),$(wildcard $(SOURCE_DIR)/*.$(suffix)))
+OBJECTS := $(foreach suffix, $(SOURCE_SUFFIXES), $(addprefix $(BUILD_DIR)/,$(notdir $(subst .$(suffix),.o,$(SOURCES)))))
 SHARED := libtourtre.so
 STATIC := libtourtre.a
+
+CFLAGS = $(foreach dir, $(INCLUDE_DIRS), $(addprefix -I, $(dir))) $(COMPILE_FLAGS) 
+CPPFLAGS = $(DEFINES) $(foreach dir, $(INCLUDE_DIRS), $(addprefix -I, $(dir)))
 
 .PHONY: all clean doc libs examples
 
@@ -35,21 +36,21 @@ $(STATIC) : $(OBJECTS)
 $(SHARED) : $(OBJECTS)
 	$(CC) -shared -o $@ $^
 
-$(BUILDDIR)/%.o: $(SOURCEDIR)/%.c
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	mkdir -p $(dir $@)	
-	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDEDIR) -I$(dir $<) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 examples: $(STATIC)
-	cd examples/simple && "$(MAKE)" all
+	cd examples/simple && "$(MAKE)" all PPFLAGS="$(PPFLAGS)"
 
 doxyfile.inc: Makefile
-	@echo INPUT                  = $(INCLUDEDIR) > doxyfile.inc
-	@echo OUTPUT_DIRECTORY         =  $(DOCDIR) >> doxyfile.inc
+	@echo INPUT                  = $(INCLUDE_DIRS) > doxyfile.inc
+	@echo OUTPUT_DIRECTORY         =  $(DOC_DIR) >> doxyfile.inc
 
 doc: doxyfile.inc $(SOURCES)
 	doxygen Doxyfile
 
 clean :
-	-rm -rf $(SHARED) $(STATIC) $(OBJECTS) $(DOCDIR)/html doxyfile.inc
+	-rm -rf $(SHARED) $(STATIC) $(OBJECTS) $(DOC_DIR)/html doxyfile.inc
 	-cd examples/simple && "$(MAKE)" clean
 

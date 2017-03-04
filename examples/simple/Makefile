@@ -1,39 +1,40 @@
-#########################################################
-##                                                     ##
-##       Generic makefile for simple projects.         ## 
-##                                                     ##
-##  Makes one executable, named with the EXE variable. ##
-##   All source goes in a flat directory, named ./src  ##
-##                                                     ##
-#########################################################
+PPFLAGS ?= 
 
-#name of the executable
-EXE = simple
+EXE := simple
 
-#include directories
-INCLUDE_DIRS = -I../../include
+CXX := g++
 
 #compiler flags
-COMPILE_FLAGS = -O3
-COMPILE_FLAGS += -g
+COMPILE_FLAGS := -std=c++11 -O3 -pedantic -Wall -fpic -march=native
+COMPILE_FLAGS += -g -gdwarf-2
+
+DEFINES := -DNDEBUG -DUSE_ZLIB
+DEFINES += ${PPFLAGS}
 
 #lib directories
-LIB_DIRS = -L../.. 
+LIB_DIRS := ../.. 
+
+INCLUDE_DIRS := ../../include
 
 #linker flags
-LINK_FLAGS = -lz -ltourtre -static -fopenmp
+LINK_FLAGS := -lz -ltourtre -static -flto
 
-#preprocessor defines
-DEFINES = -DUSE_ZLIB -D_OPENMP
+ifneq (,$(findstring openmp,$(PPFLAGS)))
+LINK_FLAGS += -fopenmp
+endif
 
 #source suffixes to scan for
-SOURCE_SUFFIXES = cpp cc
+SOURCE_SUFFIXES := cpp cc
 
 #directory to scan
-SOURCE_DIR = src
+SOURCE_DIR := src
 
 #temporaries dir (object files, moc files, etc)
-OBJ_DIR = obj
+OBJ_DIR := obj
+
+CXXFLAGS = $(foreach dir, $(INCLUDE_DIRS), $(addprefix -I, $(dir))) $(COMPILE_FLAGS)
+CPPFLAGS = $(DEFINES) $(foreach dir, $(INCLUDE_DIRS), $(addprefix -I, $(dir)))
+LDFLAGS = $(foreach dir, $(LIB_DIRS), $(addprefix -L, $(dir))) $(LINK_FLAGS)
 
 #targets
 all: $(EXE)
@@ -44,35 +45,13 @@ clean:
 
 remake: clean $(EXE)
 
-
-
-#standard make vars
-CXX = g++
-CC = gcc
-CFLAGS = $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-CXXFLAGS = $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-CPPFLAGS = $(DEFINES) $(INCLUDE_DIRS)
-LDFLAGS = $(LIB_DIRS) $(LINK_FLAGS)
-
-#####################################################
-## everything beyond this point should be automatic,
-## assuming all your source files are in ./src .
-## For each file in ./src that matches a suffix in 
-## SOURCE_SUFFIXES, .o and .d files with the same name
-## will be made in ./obj, which must exist. The .o files
-## will be used to build EXE, and the .d files will be
-## included in the makefile. The .d files contain targets
-## for themselves so dependencies should be self-updating
-
 OBJ_FILES = $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(OBJ_DIR)/,$(notdir $(subst .$(suffix),.o,$(wildcard $(SOURCE_DIR)/*.$(suffix))))))
 DEP_FILES = $(foreach suffix,$(SOURCE_SUFFIXES),$(addprefix $(OBJ_DIR)/,$(notdir $(subst .$(suffix),.d,$(wildcard $(SOURCE_DIR)/*.$(suffix))))))
 
 $(EXE): $(OBJ_FILES) $(DEP_FILES)
-	$(CXX) -o $(EXE) $(filter $(OBJ_DIR)/%.o, $^) $(LDFLAGS)
+	$(CXX) -o $(EXE) $(OBJ_FILES) $(LDFLAGS)
 
 -include $(DEP_FILES)
-
-#for reference, this is what the output of these macros would look like if hand-written, for the suffix cpp
 
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	mkdir -p $(OBJ_DIR)
@@ -81,9 +60,3 @@ $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 $(OBJ_DIR)/%.d: $(SOURCE_DIR)/%.cpp
 	mkdir -p $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $< -MM -MT $@ -MT $(subst .d,.o,$@) -MF $(subst .o,.d,$@)
-
-%.h :
-	@echo
-	@echo caught unsatisfied header : $@
-	@echo
-	

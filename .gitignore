@@ -333,3 +333,6 @@ test/results
 GTAGS
 GPATH
 GRTAGS
+
+# Python files
+*.pyc

@@ -97,6 +97,9 @@ for perm in ppflags_perms:
             statsfile.write(word + '\t')
         statsfile.write('\n')
 
+    statsfile.write('\n')
+    statsfile.flush()
+
     # Print result
     print_results(results)
     print('\n')

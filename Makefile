@@ -1,8 +1,18 @@
 PPFLAGS ?= 
 
 CC := gcc
-COMPILE_FLAGS := -std=c11 -O3 -pedantic -Wall -fpic -march=native
+COMPILE_FLAGS := -std=c11 -pedantic -Wall -fpic
 COMPILE_FLAGS += -g -gdwarf-2
+ifeq ($(CC), gcc)
+COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast -fomit-frame-pointer
+else  ifeq ($(CC), icc)
+COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
+ifneq (,$(findstring openmp,$(PPFLAGS)))
+COMPILE_FLAGS += -qopenmp
+endif
+else
+$(error "unknown compiler $(CC)")
+endif
 DEFINES := -DNDEBUG
 DEFINES += ${PPFLAGS}
 
@@ -41,7 +51,7 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 examples: $(STATIC)
-	cd examples/simple && "$(MAKE)" all PPFLAGS="$(PPFLAGS)"
+	cd examples/simple && "$(MAKE)" all PPFLAGS="$(PPFLAGS)" CC="$(CC)"
 
 doxyfile.inc: Makefile
 	@echo INPUT                  = $(INCLUDE_DIRS) > doxyfile.inc

@@ -2,11 +2,25 @@ PPFLAGS ?=
 
 EXE := simple
 
-CXX := g++
+CXX :=
+CC := gcc
 
 #compiler flags
-COMPILE_FLAGS := -std=c++11 -O3 -pedantic -Wall -fpic -march=native
+COMPILE_FLAGS := -std=c++11 -pedantic -Wall -fpic
 COMPILE_FLAGS += -g -gdwarf-2
+
+ifeq ($(CC), gcc)
+CXX = g++
+COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast -fomit-frame-pointer
+else ifeq ($(CC), icc)
+CXX = icpc
+COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
+ifneq (,$(findstring openmp,$(PPFLAGS)))
+COMPILE_FLAGS += -qopenmp
+endif
+else
+$(error "unknown compiler $(CC)")
+endif
 
 DEFINES := -DNDEBUG -DUSE_ZLIB
 DEFINES += ${PPFLAGS}
@@ -17,10 +31,17 @@ LIB_DIRS := ../..
 INCLUDE_DIRS := ../../include
 
 #linker flags
-LINK_FLAGS := -lz -ltourtre -static -flto
-
+LINK_FLAGS := -lz -ltourtre -static
+ifeq (($CC), gcc)
+LINK_FLAGS += -flto
 ifneq (,$(findstring openmp,$(PPFLAGS)))
 LINK_FLAGS += -fopenmp
+endif
+else 
+LINK_FLAGS += -prof-gen -prof-use -parallel -ipo
+ifneq (,$(findstring openmp,$(PPFLAGS)))
+LINK_FLAGS += -qopenmp
+endif
 endif
 
 #source suffixes to scan for

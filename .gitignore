@@ -336,3 +336,4 @@ GRTAGS
 
 # Python files
 *.pyc
+env/

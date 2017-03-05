@@ -64,13 +64,19 @@ ref_times = {}  # Store ref impl times
 
 # Execute ref implementation
 for filename in input_files:
+    times = [None for rep in range(args.repetitions)]
 
-    reset_caches()
+    # Repeat to get an average
+    for rep in range(args.repetitions):
+        reset_caches()
 
-    execute_ref = subprocess.Popen([ref_simple, '-i', os.path.join(rootdir, 'sampledata', filename), '-o', '/tmp/ref_' + filename], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    ref_time, ref_stdout, ref_stderr = time_process(execute_ref)
+        execute_ref = subprocess.Popen([ref_simple, '-i', os.path.join(rootdir, 'sampledata', filename), '-o', '/tmp/ref_' + filename], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        ref_time, ref_stdout, ref_stderr = time_process(execute_ref)
 
-    ref_times[filename] = ref_time
+        times[rep] = ref_time
+
+    median_ref_time = median(times)
+    ref_times[filename] = median_ref_time
 
 
 # Execute improved implementation for every permutation of ppflags

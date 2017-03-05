@@ -1,5 +1,6 @@
 import time
 
+
 def time_process(process):
     t1 = time.time()
     output = process.communicate()

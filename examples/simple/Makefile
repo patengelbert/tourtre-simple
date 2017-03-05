@@ -6,15 +6,16 @@ CXX :=
 CC := gcc
 
 #compiler flags
-COMPILE_FLAGS := -std=c++11 -pedantic -Wall -fpic
+COMPILE_FLAGS := -std=c++11 -pedantic -Wall
 COMPILE_FLAGS += -g -gdwarf-2
 
 ifeq ($(CC), gcc)
 CXX = g++
-COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast
+COMPILE_FLAGS += -pipe -march=native -Ofast
 else ifeq ($(CC), icc)
 CXX = icpc
-COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
+COMPILE_FLAGS += -O3 -xhost -no-prec-div
+# COMPILE_FLAGS += -parallel -ipo
 ifneq (,$(findstring openmp,$(PPFLAGS)))
 COMPILE_FLAGS += -qopenmp
 endif
@@ -38,7 +39,9 @@ ifneq (,$(findstring openmp,$(PPFLAGS)))
 LINK_FLAGS += -fopenmp
 endif
 else 
-LINK_FLAGS += -prof-gen -prof-use -parallel -ipo
+# LINK_FLAGS += -ipo
+# LINK_FLAGS += -parallel -ipo
+# LINK_FLAGS += -prof-gen -prof-use -parallel -ipo
 ifneq (,$(findstring openmp,$(PPFLAGS)))
 LINK_FLAGS += -qopenmp
 endif

@@ -3,21 +3,29 @@ PPFLAGS ?=
 CC := gcc
 COMPILE_FLAGS := -std=c11 -pedantic -Wall -fpic
 COMPILE_FLAGS += -g -gdwarf-2
+
 ifeq ($(CC), gcc)
-COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast
+COMPILE_FLAGS += -pipe -march=native -Ofast
 else  ifeq ($(CC), icc)
-COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
+COMPILE_FLAGS += -O3 -xhost -no-prec-div
+# COMPILE_FLAGS += -parallel -ipo
 ifneq (,$(findstring openmp,$(PPFLAGS)))
 COMPILE_FLAGS += -qopenmp
 endif
 else
 $(error "unknown compiler $(CC)")
 endif
+
 DEFINES := -DNDEBUG
 DEFINES += ${PPFLAGS}
 
-AR := ar
 ARFLAGS := -r
+
+ifeq ($(CC), gcc)
+AR := ar
+else
+AR := xiar
+endif
 
 SOURCE_DIR := src
 BUILD_DIR := obj

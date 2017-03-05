@@ -54,13 +54,20 @@ size_t Mesh::getNeighbors(size_t i, size_t * n)
 void Mesh::getNeighbors(size_t i, std::vector<size_t> & n)
 #endif
 {
-	uint x,y,z;
+    uint x,y,z;
+	#ifdef OPT_COORD_LUT
+    coord c = data.indexesToCoords[i];
+    x = c.x;
+    y = c.y;
+    z = c.z;
+	#else
 	data.convertIndex( i, x, y, z );
-	if ( (x+y+z)%2 == ODD_TET_PARITY ) {
-		return find6Neighbors(x,y,z,n);
+	#endif
+    if ( (x+y+z)%2 == ODD_TET_PARITY ) {
+		return find6Neighbors(x,y,z,n); 
 	} else {
 		return find18Neighbors(x,y,z,n);
-	}
+    }
 }
 
 #ifdef OPT_VECTOR

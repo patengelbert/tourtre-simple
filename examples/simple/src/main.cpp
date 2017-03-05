@@ -157,6 +157,15 @@ int main( int argc, char ** argv ) {
 		cerr << "Failed to load data" << std::endl;
 		exit(1);
 	}
+	#ifdef OPT_COORD_LUT
+	// Generate LUT for indexes
+	// #pragma omp parallel for max_threads(8)
+	for (uint i = 0; i < data.totalSize; i++)
+	{
+		data.indexesToCoords[i] = data.convertIndex(i);
+	}
+	#endif
+
 
 	//Create mesh
 	Mesh mesh(data);

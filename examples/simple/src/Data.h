@@ -6,12 +6,21 @@
 #include <cmath>
 
 #include "Global.h"
+#include "seiHelpers.h"
+
+struct coord {
+	uint x;
+	uint y;
+	uint z;
+};
 
 struct Data 
 {
 	DataType * data; //the data array
 	uint size[3]; //dimensions
 	uint totalSize; //product of the above 3 integers
+
+	coord * indexesToCoords;
 
 	DataType maxValue, minValue; //max and min values occuring in the data
 		
@@ -25,6 +34,7 @@ struct Data
 	~Data() 
 	{
 		if (data) delete[] data;
+		if (indexesToCoords) delete[] indexesToCoords;
 	}
 
 	//1 dimensional referencing
@@ -46,12 +56,21 @@ struct Data
 			x = y = z = 0xffffffff;
 			return;
 		}
-		
+
 		int size01 = size[0] * size[1];
-		
+
 		z = id / size01;
 		y = (id - z*size01) / size[0];
 		x = id - z*size01 - y*size[0];
+	}
+
+	coord convertIndex(uint id)
+	{
+		int size01 = size[0] * size[1];
+		uint z = id / size01;
+		uint y = (id - z * size01) / size[0];
+		uint x = id - z * size01 - y * size[0];
+		return {.x = x, .y = y, .z = z};
 	}
 	
 	bool greater(uint a, uint b);

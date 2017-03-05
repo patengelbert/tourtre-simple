@@ -83,6 +83,9 @@ bool Data::load(const char * file, char * prefix, bool * compressed) {
 
 	totalSize = size[0] * size[1] * size[2];
 
+	#ifdef OPT_COORD_LUT
+	indexesToCoords = (coord *)malloc(sizeof(coord) * totalSize);
+	#endif
 
 	std::ifstream infile;
 

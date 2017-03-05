@@ -327,7 +327,9 @@ profile.sh
 profiles/*
 
 # Test
-test/results
+test/results/*
+!test/results/gcc.csv
+!test/results/icc.csv
 
 # C Tags
 GTAGS

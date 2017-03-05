@@ -1,0 +1,8 @@
+CThead-twice.256x256x226.uint16 	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	5.413463354110718    	improved 	12.185609817504883   	speedup 	0.4442505081964929  
+CThead.256x256x113.uint16       	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	2.6494617462158203   	improved 	6.031341791152954    	speedup 	0.43928230864020523 
+MRbrain.256x256x109.uint16      	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	3.160123825073242    	improved 	5.868094444274902    	speedup 	0.5385264083737368  
+bucky.32x32x32.uint8            	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	0.0258028507232666   	improved 	0.04655599594116211  	speedup 	0.5542326010139806  
+nucleon.41x41x41.uint8          	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	0.03670525550842285  	improved 	0.07269978523254395  	speedup 	0.5048880872345659  
+test-flat.16x16x16.uint8        	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	0.013245105743408203 	improved 	0.021615982055664062 	speedup 	0.6127459631165623  
+test-one.16x16x16.uint8         	flags 	-D_OPENMP -fopenmp -DOPT_PARALLEL_SORT 	ref 	0.013471126556396484 	improved 	0.018742799758911133 	speedup 	0.7187360869067457  
+

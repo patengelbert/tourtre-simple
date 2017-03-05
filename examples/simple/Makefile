@@ -11,7 +11,7 @@ COMPILE_FLAGS += -g -gdwarf-2
 
 ifeq ($(CC), gcc)
 CXX = g++
-COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast -fomit-frame-pointer
+COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast
 else ifeq ($(CC), icc)
 CXX = icpc
 COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
@@ -32,7 +32,7 @@ INCLUDE_DIRS := ../../include
 
 #linker flags
 LINK_FLAGS := -lz -ltourtre -static
-ifeq (($CC), gcc)
+ifeq ($(CC), gcc)
 LINK_FLAGS += -flto
 ifneq (,$(findstring openmp,$(PPFLAGS)))
 LINK_FLAGS += -fopenmp

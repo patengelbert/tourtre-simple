@@ -4,7 +4,7 @@ CC := gcc
 COMPILE_FLAGS := -std=c11 -pedantic -Wall -fpic
 COMPILE_FLAGS += -g -gdwarf-2
 ifeq ($(CC), gcc)
-COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast -fomit-frame-pointer
+COMPILE_FLAGS += -pipe -march=native -floop-parallelize-all -ftree-parallelize-loops=4 -Ofast
 else  ifeq ($(CC), icc)
 COMPILE_FLAGS += -O3 -xhost -parallel -fp-model fast -ipo
 ifneq (,$(findstring openmp,$(PPFLAGS)))

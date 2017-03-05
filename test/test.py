@@ -23,7 +23,7 @@ args = parser.parse_args()
 
 # Make reference
 try:
-    make_ref = subprocess.check_call(['make', '-B', '-C', os.path.join(dirname, 'tourtre-simple-baseline')], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    make_ref = subprocess.check_call(['make', '-B', '-j8', '-C', os.path.join(dirname, 'tourtre-simple-baseline')], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 except subprocess.CalledProcessError as e:
     print("make ref failed with this exception:\n\n{}\n\n Exiting...".format(str(e)))
     exit(1)
@@ -42,7 +42,7 @@ try:
 
     # Get every permutation of ppflags
     for j in range(len(ppflags)+1):
-        perms = list(itertools.permutations(ppflags, j))
+        perms = list(itertools.combinations(ppflags, j))
         for i in range(len(perms)):
             ppflags_perms.append(perms[i])
     ppflags_perms.reverse()
@@ -87,7 +87,7 @@ for perm in ppflags_perms:
 
     # Make improved
     try:
-        make_cmd = ['make', '-B', '-C', rootdir, 'PPFLAGS='+flags, 'CC='+args.compiler]
+        make_cmd = ['make', '-B', '-j8', '-C', rootdir, 'PPFLAGS='+flags, 'CC='+args.compiler]
         make_improved = subprocess.check_call(make_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
         print("make improved failed with these flags: {} \n\nwith this exception:\n\n{}".format(flags, str(e)))

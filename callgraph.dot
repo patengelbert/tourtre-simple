@@ -1,0 +1,31 @@
+digraph "callgraph" {
+  F1271668 [label="ct_splitSweep\n10 789 607 451"];
+  F1271d68 [label="ct_sweep\n21 571 442 031"];
+  F1283f48 [label="ct_sweepAndMerge\n22 395 917 690"];
+  F1284688 [label="ct_joinSweep\n10 781 834 637"];
+  F12868e8 [label="neighbors(unsigned long, unsig...\n14 984 734 191"];
+  F1292de8 [label="Mesh::createGraph(std::vector<...\n13 694 535 976"];
+  F12940a8 [label="void std::__introsort_loop<>(_...\n12 395 228 090"];
+  F1294b28 [label="Data::less(unsigned int, unsig...\n7 239 655 424"];
+  F1296678 [label="Mesh::getNeighbors(unsigned lo...\n12 035 539 024"];
+  F1296c38 [label="Mesh::find18Neighbors(unsigned...\n8 353 798 224"];
+  F12e9f28 [label="(below main)\n36 905 997 351"];
+  F12ee2b8 [label="main\n36 902 072 270"];
+  F1313fa8 [label="0x000000000040178e\n36 905 997 362"];
+  F13443b8 [label="void std::__introsort_loop<>(_...\n11 707 209 683"];
+  F1271668 -> F1271d68 [weight=3,label="10 789 607 422 (1x)"];
+  F1271d68 -> F12868e8 [weight=3,label="14 984 734 191 (29 622 272x)"];
+  F1283f48 -> F1271668 [weight=3,label="10 789 607 451 (1x)"];
+  F1283f48 -> F1284688 [weight=3,label="10 781 834 637 (1x)"];
+  F1284688 -> F1271d68 [weight=3,label="10 781 834 609 (1x)"];
+  F12868e8 -> F1296678 [weight=3,label="12 035 539 024 (29 622 272x)"];
+  F1292de8 -> F12940a8 [weight=3,label="12 395 228 090 (1x)"];
+  F12940a8 -> F13443b8 [weight=3,label="11 707 209 683 (11x)"];
+  F1296678 -> F1296c38 [weight=3,label="8 353 798 224 (14 811 136x)"];
+  F12e9f28 -> F12ee2b8 [weight=3,label="36 902 072 270 (1x)"];
+  F12ee2b8 -> F1283f48 [weight=3,label="22 395 917 690 (1x)"];
+  F12ee2b8 -> F1292de8 [weight=3,label="13 694 535 976 (1x)"];
+  F1313fa8 -> F12e9f28 [weight=3,label="36 905 997 351 (1x)"];
+  F13443b8 -> F1294b28 [weight=3,label="7 239 655 424 (363 748 743x)"];
+  F13443b8 -> F13443b8 [weight=3,label="82 897 291 741 (1 433 262x)"];
+}

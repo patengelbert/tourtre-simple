@@ -183,13 +183,18 @@ ctArc * ct_sweepAndMerge( ctContext * ctx )
 {
 ct_checkContext(ctx);
 {
+#ifdef OPT_PARALLEL_SWEEP
     #pragma omp parallel sections num_threads(2) 
     {
         #pragma omp section
         ct_joinSweep(ctx);
         #pragma omp section
-        ct_splitSweep(ctx);
+		ct_splitSweep(ctx);
     }
+#else
+	ct_joinSweep(ctx);
+	ct_splitSweep(ctx);
+#endif
     LOG(LOG_DEBUG, "Finished OPENMP sections");
     ct_augment(ctx);
     return ctx->tree=ct_merge( ctx );

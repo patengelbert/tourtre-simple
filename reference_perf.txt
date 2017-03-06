@@ -1,0 +1,14 @@
+Performance counter stats for './simple -i sampledata/CThead-twice.256x256x226.uint16 -c':                                                               
+                                                                                                                                                                      
+       5352.185967      task-clock (msec)         #    0.999 CPUs utilized                                                                                            
+                25      context-switches          #    0.005 K/sec                                                                                                    
+                13      cpu-migrations            #    0.002 K/sec                                                                                                    
+            20,453      page-faults               #    0.004 M/sec                                                                                                    
+    16,445,270,823      cycles                    #    3.073 GHz                                                                                                      
+                 0      stalled-cycles-frontend   #    0.00% frontend cycles idle                                                                                     
+                 0      stalled-cycles-backend    #    0.00% backend  cycles idle                                                                                     
+    36,986,778,883      instructions              #    2.25  insns per cycle                                                                                          
+     8,192,235,607      branches                  # 1530.634 M/sec                                                                                                    
+        62,603,758      branch-misses             #    0.76% of all branches                                                                                          
+                                                                                                                                                                      
+       5.355104116 seconds time elapsed  

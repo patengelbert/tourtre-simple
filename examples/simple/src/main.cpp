@@ -43,7 +43,7 @@ size_t neighbors ( size_t v, size_t * nbrs, void * d ) {
 	return mesh->getNeighbors(v,nbrs);
 #else
 
-#ifndef _OPENMP
+#ifndef OPT_PARALLEL_SWEEP
 	static
 #endif
 	std::vector<size_t> nbrsBuf;
@@ -159,7 +159,7 @@ int main( int argc, char ** argv ) {
 	}
 	#ifdef OPT_COORD_LUT
 	// Generate LUT for indexes
-	// #pragma omp parallel for max_threads(8)
+	#pragma omp parallel for max_threads(8)
 	for (uint i = 0; i < data.totalSize; i++)
 	{
 		data.indexesToCoords[i] = data.convertIndex(i);

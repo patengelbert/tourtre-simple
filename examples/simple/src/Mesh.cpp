@@ -41,7 +41,7 @@ void Mesh::createGraph(std::vector<size_t> & order)
 		order[i] = i;
 #if defined(OPT_PARALLEL_SORT) && defined(_OPENMP)
 	LOG(LOG_DEBUG, "Using parallel sorting");
-	pss::parallel_stable_sort(order.begin(), order.end(), AscendingOrder(data));
+	pss::parallel_stable_sort(&order[0], &order[order.size()], AscendingOrder(data));
 #else
 	LOG(LOG_DEBUG, "Using serial sorting");
 	sort( order.begin() , order.end(), AscendingOrder(data) );

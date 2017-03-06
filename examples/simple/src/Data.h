@@ -70,7 +70,11 @@ struct Data
 		uint z = id / size01;
 		uint y = (id - z * size01) / size[0];
 		uint x = id - z * size01 - y * size[0];
-		return {.x = x, .y = y, .z = z};
+		coord ret;
+		ret.x = x;
+		ret.y = y;
+		ret.z = z;
+		return ret;
 	}
 	
 	bool greater(uint a, uint b);

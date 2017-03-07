@@ -1,18 +1,13 @@
-max value was 12 and min value was 0
-Number of nodes in the tree: 67842
-==3628==
-==3628== I   refs:      36,905,997,301
-==3628== I1  misses:             1,440
-==3628== LLi misses:             1,407
-==3628== I1  miss rate:           0.00%
-==3628== LLi miss rate:           0.00%
-==3628==
-==3628== D   refs:      14,746,156,964  (11,137,250,678 rd   + 3,608,906,286 wr)
-==3628== D1  misses:       116,911,265  (   100,164,638 rd   +    16,746,627 wr)
-==3628== LLd misses:        65,168,116  (    48,851,933 rd   +    16,316,183 wr)
-==3628== D1  miss rate:            0.7% (           0.8%     +           0.4%  )
-==3628== LLd miss rate:            0.4% (           0.4%     +           0.4%  )
-==3628==
-==3628== LL refs:          116,912,705  (   100,166,078 rd   +    16,746,627 wr)
-==3628== LL misses:         65,169,523  (    48,853,340 rd   +    16,316,183 wr)
-==3628== LL miss rate:             0.1% (           0.1%     +           0.4%  )
+L1 Instruction cache:         32768 B, 64 B, 8-way associative
+L1 Data cache:         32768 B, 64 B, 8-way associative
+L4 cache:         6291456 B, 64 B, 12-way associative
+Instruction refs:      36,905,997,301
+L1 Instruction misses:             1,440
+L4 Instruction misses:             1,407
+L1 Instruction miss rate:           0.00%
+L4 Instruction miss rate:           0.00%
+Data refs:      14,746,156,964  (11,137,250,678 rd   + 3,608,906,286 wr)
+L1 Data misses:       116,911,265  (   100,164,638 rd   +    16,746,627 wr)
+L4 Data misses:        65,168,116  (    48,851,933 rd   +    16,316,183 wr)
+L1 Data miss rate:            0.7% (           0.8%     +           0.4%  )
+L4 Data miss rate:            0.4% (           0.4%     +           0.4%  )
